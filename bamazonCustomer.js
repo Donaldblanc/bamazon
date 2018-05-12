@@ -30,7 +30,7 @@ var createTable = function () {
     });
 }//create table
 
-
+// need to add a function for qutiing 
 var customerChoice = function (results) {
     inquier.prompt([{
         type: "input",
@@ -46,12 +46,39 @@ var customerChoice = function (results) {
             //console.log("item: "+ results[i].productname);
             if (results[i].productname == answer.choice) {
                 exist = true;
+                
                 var item = answer.choice;
                 var key = i;
                 console.log("We found your item");  
+
+                inquier.prompt({
+                    type:"input",
+                    name:'quant',
+                    message: "how many would you like to purchase?",
+                    validate: function(value){
+                        if(isNaN(value)==false){
+                            return true;
+                        }else {
+                            return false; 
+                        }
+                    }
+                }).then( function(answer){
+                    if( (results[key].stock_quantity - answer.quant) > 0){
+                        console.log(" you want " + answer.quant );
+                       // console.log(results[key].stock_quantity-answer.quant)
+                        mySQLConnect.query("UPDATE products SET stock_quantity='"+(results[key].stock_quantity-answer.quant)+"' WHERE productname='"+ item
+                        +"'", function (err,results2){
+                            console.log("Product Bought!");
+                            createTable();
+                        })
+
+                    }else{
+                        console.log("Not a valid selection!")
+                        customerChoice(results);
+                    }
+                })
             }
        }//for
 
     })
-
 }//customerChoice
