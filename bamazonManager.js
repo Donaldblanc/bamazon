@@ -34,7 +34,7 @@ var askManager = function (results) {
         type: "rawlist",
         name: "choice",
         message: "what do you want to do?",
-        choices: ["Add new item", "Add quantity to an existing item"]
+        choices: ["Add new item", "Add quantity to an existing item","View Low Inventory"]
     }]).then(function (response) {
         if (response.choice == "Add quantity to an existing item") {
             addQuantity(results);
@@ -42,9 +42,30 @@ var askManager = function (results) {
         if (response.choice == "Add new item") {
             addItem();
         }
+        if(response.choice == "View Low Inventory"){
+            lowInventory();
+        }
 
     })
 }
+
+
+function lowInventory(){
+
+var sql = "SELECT * from products WHERE Stock_Quantity < 5"
+
+mySQLConnect.query( sql, function (err, results) {
+
+    for (var i = 0; i < results.length; i++) {
+        console.log(
+            results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
+        );
+    }//for
+    askManager(results);
+ })
+
+}
+
 
 function addItem() {
     inquier.prompt([{
