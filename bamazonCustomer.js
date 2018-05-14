@@ -1,7 +1,7 @@
 // need to include the msql package to query the database and connect 
 var sql = require('mysql');
 var inquier = require('inquirer');
-
+require('console.table');
 var mySQLConnect = sql.createConnection({
     host: "localhost",
     port: 3306,
@@ -20,12 +20,13 @@ mySQLConnect.connect(function (err) {
 var createTable = function () {
     mySQLConnect.query("SELECT * FROM products", function (err, results) {
         //console.log(results);
-        console.log("itemid \t || productname \t || departmentname \t || price \t || stock_quantity \n")
-        for (var i = 0; i < results.length; i++) {
-            console.log(
-                results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
-            );
-        }//for
+        console.table(results);
+        // console.log("itemid \t || productname \t || departmentname \t || price \t || stock_quantity \n")
+        // for (var i = 0; i < results.length; i++) {
+        //     console.log(
+        //         results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
+        //     );
+        // }//for
         customerChoice(results);
     });
 }//create table
@@ -68,8 +69,12 @@ var customerChoice = function (results) {
                        // console.log(results[key].stock_quantity-answer.quant)
                         mySQLConnect.query("UPDATE products SET stock_quantity='"+(results[key].stock_quantity-answer.quant)+"' WHERE productname='"+ item
                         +"'", function (err,results2){
-                            console.log("Product Bought!");
-                            createTable();
+                                mySQLConnect.query("UPDATE departments SET productsales=productsales+" + (answer.quant*results[key].price) + ", totalsales = productsales - overheadcosts WHERE departmentname= '" + results[key].departmentname + "';",
+                                function (err, results3 ){ 
+                                    console.log("SALES ADDED TO DEPARTMENT");
+                                });
+                                console.log( results[key].productname + " Bought!");
+                                createTable();
                         })
 
                     }else{

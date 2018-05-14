@@ -1,5 +1,6 @@
 var sql = require('mysql');
 var inquier = require('inquirer');
+require('console.table');
 
 var mySQLConnect = sql.createConnection({
     host: "localhost",
@@ -19,12 +20,13 @@ mySQLConnect.connect(function (err) {
 var createTable = function () {
     mySQLConnect.query("SELECT * FROM products", function (err, results) {
         //console.log(results);
-        console.log("itemid \t || productname \t || departmentname \t || price \t || stock_quantity \n")
-        for (var i = 0; i < results.length; i++) {
-            console.log(
-                results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
-            );
-        }//for
+        console.table(results);
+        // console.log("itemid \t || productname \t || departmentname \t || price \t || stock_quantity \n")
+        // for (var i = 0; i < results.length; i++) {
+        //     console.log(
+        //         results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
+        //     );
+        // }//for
         askManager(results);
     });
 }//create table
@@ -55,11 +57,12 @@ var sql = "SELECT * from products WHERE Stock_Quantity < 5"
 
 mySQLConnect.query( sql, function (err, results) {
 
-    for (var i = 0; i < results.length; i++) {
-        console.log(
-            results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
-        );
-    }//for
+    console.table(results);
+    // for (var i = 0; i < results.length; i++) {
+    //     console.log(
+    //         results[i].itemid + "\t || " + results[i].productname + "\t || " + results[i].departmentname + "\t || " + results[i].price + "\t || " + results[i].stock_quantity + "\n"
+    //     );
+    // }//for
     askManager(results);
  })
 
