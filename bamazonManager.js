@@ -46,42 +46,77 @@ var askManager = function (results) {
     })
 }
 
-function addItem(){
+function addItem() {
     inquier.prompt([{
         type: "input",
         name: "productname",
         message: "what is the name of the product?"
-    },{
+    }, {
         type: "input",
         name: "departmentname",
         message: "what department does it go in?"
-    },{
+    }, {
         type: "input",
         name: "price",
-        message: "how much does it cost" 
-    },{
+        message: "how much does it cost"
+    }, {
         type: "input",
         name: "quantity",
         message: "how many are available?"
-    }]).then(function(response){
-        mySQLConnect.query(" INSERT INTO products SET ?", 
-        
-        { 
-            productName :response.productname , 
-            departmentname : response.departmentname, 
-            Price : response.price, 
-            Stock_Quantity: response.quantity
-        },
-        function (err, results){
-            if(err)throw err;
-            console.log(response.productname +"ADDED TO BAMAZON");
-            createTable();
-        })
+    }]).then(function (response) {
+        mySQLConnect.query(" INSERT INTO products SET ?",
+
+            {
+                productName: response.productname,
+                departmentname: response.departmentname,
+                Price: response.price,
+                Stock_Quantity: response.quantity
+            },
+            function (err, results) {
+                if (err) throw err;
+                console.log(response.productname + "ADDED TO BAMAZON");
+                createTable();
+            })
     })
-}
+}//add item 
+
+function addQuantity(results) {
+
+    inquier.prompt([{
+        type: "input",
+        name: "productname",
+        message: "what product would you like to update?"
+    }, {
+        type: "input",
+        name: "added",
+        message: "Hhow much would you like to add?"
+    }]).then(function (response) {
+        for (var i = 0; i < results.length; i++) {
+
+            if (results[i].productname == response.productname) {
+                var sql = " UPDATE products SET  Stock_Quantity = " + "'" + (results[i].stock_quantity + parseInt(response.added)) + "'" + " WHERE  itemid= " + "'" + results[i].itemid + "'";
+                //  console.log(" total now: " + (results[i].stock_quantity + parseInt(response.added) ) )
+                mySQLConnect.query(sql,
+                    function (err, response) {
+                        if (err) throw err;
+                        if (results.affectedRows == 0) {
+                            console.log("The item does not exist");
+                            createTable();
+                        } else {
+                            console.log("item added");
+                            createTable();
+                        }
+                    }
+                )
+            }
+        }
+    })
+
+
+}//addQuantity
 
 
 
 
 
-createTable();
+//createTable();
