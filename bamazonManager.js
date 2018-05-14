@@ -49,7 +49,6 @@ var askManager = function (results) {
     })
 }
 
-
 function lowInventory(){
 
 var sql = "SELECT * from products WHERE Stock_Quantity < 5"
@@ -65,7 +64,6 @@ mySQLConnect.query( sql, function (err, results) {
  })
 
 }
-
 
 function addItem() {
     inquier.prompt([{
@@ -135,9 +133,3 @@ function addQuantity(results) {
 
 
 }//addQuantity
-
-
-
-
-
-//createTable();
