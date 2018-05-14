@@ -34,12 +34,12 @@ var askManager = function (results) {
         type: "rawlist",
         name: "choice",
         message: "what do you want to do?",
-        choices: ["Add new item", "Add quantity to an existing item","View Low Inventory"]
+        choices: ["Add New Product", "Add to Inventory","View Low Inventory"]
     }]).then(function (response) {
-        if (response.choice == "Add quantity to an existing item") {
+        if (response.choice == "Add to Inventory") {
             addQuantity(results);
         }
-        if (response.choice == "Add new item") {
+        if (response.choice == "Add New Product") {
             addItem();
         }
         if(response.choice == "View Low Inventory"){
