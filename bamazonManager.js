@@ -133,6 +133,4 @@ function addQuantity(results) {
             }
         }
     })
-
-
 }//addQuantity
