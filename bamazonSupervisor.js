@@ -48,8 +48,14 @@ function askSup (){
 
 
 var viewByDept = function(){
-    var sqlQuery = " Select departments.departmentid, departments.departmentname, departments.overheadcosts,  sum(departments.productsales) as total_sales,  (  sum(departments.productsales) - departments.overheadcosts ) total_profit from products left join departments on products.departmentname = departments.departmentid group by products.departmentname"
+    var sqlQuery =  " Select departProd.departmentid, departProd.departmentname, departProd.overheadcosts, sum(departProd.productsales) as product_sales,  (sum(departProd.productsales) - departProd.overheadcosts ) AS total_profit FROM ( SELECT departments.departmentid, departments.departmentname , departments.overheadcosts, IFNULL(products.productsales, 0) as productsales FROM products RIGHT JOIN departments ON products.departmentname = departments.departmentname) AS departProd GROUP BY departmentid;"
+                   
+    //" Select departments.departmentid, departments.departmentname, departments.overheadcosts, sum(departments.productsales) as product_sales,  (sum(departments.productsales) - departments.overheadcosts ) AS total_profit FROM ( SELECT departments.departmentid, departments.departmentname , departments.overheadcosts, IFNULL(products.productsales, 0) as productsales FROM products RIGHT JOIN departments ON products.departmentname = departments.departmentname) AS departments GROUP BY departmentid;"
+    
+    // "SELECT departProd.department_id, departProd.department_name, departProd.over_head_costs, SUM(departProd.product_sales) as product_sales, (SUM(departProd.product_sales) - departProd.over_head_costs) as total_profit FROM (SELECT departments.department_id, departments.department_name, departments.over_head_costs, IFNULL(products.product_sales, 0) as product_sales FROM products RIGHT JOIN departments ON products.department_name = departments.department_name) as departProd GROUP BY department_id"
+
     mySQLConnect.query(sqlQuery, function(err,response){
+        console.log("Error is: " + err);
         console.table(response);
         askSup();
     });
@@ -74,8 +80,6 @@ var addDepartment = function(){
             {
                 departmentname: response.name,
                 overheadcosts: response.overhead,
-                productsales : 0,
-                totalsales: 0
             },
             function (err, results){
                 console.log("ADDED DEPARTMENT");

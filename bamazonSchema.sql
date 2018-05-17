@@ -8,6 +8,6 @@ create table products(
 	departmentname varchar(45) not null,
 	price decimal (10,4) not NULL, 
 	stock_quantity integer not null,
-	primary key (itemid)
-	
+	productsales INT,
+	primary key (itemid)	
 );

@@ -1,4 +1,5 @@
-INSERT INTO products( productName, departmentName, Price, StockQuantity)
+
+INSERT INTO products( productName, departmentName, Price, stock_quantity)
 VALUES ("Polo Shirt", "Clothing", 89.95, 110),
        ("5 hour energy", "Food","19.98",48),
        ("Clif Energy Bar", "Food","5.87",6),
@@ -12,8 +13,6 @@ VALUES ("Polo Shirt", "Clothing", 89.95, 110),
 
        Select * FROM bamazon.products;
 
-       
-       
 
       UPDATE  products
       set productName = "Jordan Retro 1"

@@ -45,7 +45,7 @@ var customerChoice = function (results) {
 
         for (var i = 0; i < results.length; i++) {
             //console.log("item: "+ results[i].productname);
-            if (results[i].productname == answer.choice) {
+            if (results[i].itemid == answer.choice) {
                 exist = true;
                 
                 var item = answer.choice;
@@ -67,18 +67,18 @@ var customerChoice = function (results) {
                     if( (results[key].stock_quantity - answer.quant) > 0){
                         console.log(" you want " + answer.quant );
                        // console.log(results[key].stock_quantity-answer.quant)
-                        mySQLConnect.query("UPDATE products SET stock_quantity='"+(results[key].stock_quantity-answer.quant)+"' WHERE productname='"+ item
-                        +"'", function (err,results2){
-                                mySQLConnect.query("UPDATE departments SET productsales=productsales+" + (answer.quant*results[key].price) + ", totalsales = productsales - overheadcosts WHERE departmentname= '" + results[key].departmentname + "';",
+                        mySQLConnect.query("UPDATE products SET stock_quantity='"+(results[key].stock_quantity-answer.quant)+"' WHERE itemid='"+ results[key].itemid
+                        +"'", function (err,results2){                                                                                                      //, productsales = productsales - overheadcosts
+                                mySQLConnect.query("UPDATE products SET productsales=productsales+" + (answer.quant*results[key].price * answer.quant ) + " WHERE itemid= '" + results[key].itemid+ "';",
                                 function (err, results3 ){ 
-                                    console.log("SALES ADDED TO DEPARTMENT");
+                                    console.log("SALE completed");
                                 });
                                 console.log( results[key].productname + " Bought!");
+                                console.log( "Total Cost " + (results[key].price * answer.quant) );
                                 createTable();
                         })
-
                     }else{
-                        console.log("Not a valid selection!")
+                        console.log("Insufficient quantity!")
                         customerChoice(results);
                     }
                 })
