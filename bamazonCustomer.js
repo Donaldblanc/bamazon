@@ -41,12 +41,10 @@ var customerChoice = function (results) {
         console.log("user answered :" + answer.choice);
         console.log("results.length;"+results.length);
        
-        var exist = false;
-
         for (var i = 0; i < results.length; i++) {
             //console.log("item: "+ results[i].productname);
             if (results[i].itemid == answer.choice) {
-                exist = true;
+                
                 
                 var item = answer.choice;
                 var key = i;
