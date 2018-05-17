@@ -38,8 +38,8 @@ var customerChoice = function (results) {
         name: "choice",
         message: "what item would you like to purchase?"
     }]).then(function (answer) {
-        console.log("user answered :" + answer.choice);
-        console.log("results.length;"+results.length);
+        //console.log("user answered :" + answer.choice);
+        //console.log("results.length;"+results.length);
        
         for (var i = 0; i < results.length; i++) {
             //console.log("item: "+ results[i].productname);
